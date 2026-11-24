@@ -29,14 +29,14 @@ export default function Library() {
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
-    chargerQuestions();
+    LoadQuestions();
   }, []);
 
   if (questions == null || session == null || amountQuestionBDD == null) {
     return <ActivityIndicator size="large" style={{ flex: 1 }} />;
   }
 
-  async function chargerQuestions() {
+  async function LoadQuestions() {
     setLoadingMore(true);
     //get token
     const tokenResponse = await fetch(API_GET_SESSION_TOKEN);
@@ -51,11 +51,11 @@ export default function Library() {
     setAmountQuestionBDD(amount);
 
     //1st getquestion
-    const questionsResponse = await fetch(`${API}50&token=${token}`); //limit of 50 request
+    const questionsResponse = await fetch(`${API}50&token=${token}`); //limit of 50 quest per request
     const questionsData = await questionsResponse.json();
 
     if (questionsData.response_code !== 0) {
-      console.log("Erreur API :", questionsData.response_code);
+      console.log("API ERROR :", questionsData.response_code); //error 5 = timeout, to many request
       setLoadingMore(false);
       return;
     }
@@ -63,9 +63,9 @@ export default function Library() {
     setQuestions(allQuestions);
 
     //limit of 50 questions per request
-    console.log("fin de la recup des questions");
-    console.log("nombre demande :", amount);
-    console.log("nombre recu :", questionsData.results.length);
+    console.log("end of the question fetching cycle ");
+    console.log("Requested : 50");
+    console.log("Received : ", questionsData.results.length);
 
     //save in useState
     if (ALLQuestions == null) {
@@ -86,7 +86,7 @@ export default function Library() {
       <FlatList
         data={ALLQuestions}
         keyExtractor={(item, index) => index.toString()}
-        onEndReached={() => chargerQuestions()}
+        onEndReached={() => LoadQuestions()}
         onEndReachedThreshold={0.5}
         renderItem={({ item }) => (
           <View style={styles.question}>
