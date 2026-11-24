@@ -97,7 +97,9 @@ export default function Library() {
           </View>
         )}
         ListFooterComponent={
-          loadingMore ? <ActivityIndicator size="large" /> : null
+          loadingMore ? (
+            <ActivityIndicator style={styles.loadingIndicator} size="large" />
+          ) : null
         }
       />
     </View>
@@ -109,5 +111,8 @@ const styles = StyleSheet.create({
     padding: 7,
     borderColor: "darkgray",
     borderWidth: 1,
+  },
+  loadingIndicator: {
+    padding: 25,
   },
 });
