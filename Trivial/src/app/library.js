@@ -25,6 +25,8 @@ export default function Library() {
   const [session, SetSession] = useState(null);
   const [amountQuestionBDD, setAmountQuestionBDD] = useState(null);
   const [questions, setQuestions] = useState(null);
+  const [ALLQuestions, setALLQuestionS] = useState(null);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     chargerQuestions();
@@ -35,6 +37,7 @@ export default function Library() {
   }
 
   async function chargerQuestions() {
+    setLoadingMore(true);
     //get token
     const tokenResponse = await fetch(API_GET_SESSION_TOKEN);
     const tokenData = await tokenResponse.json();
@@ -48,8 +51,14 @@ export default function Library() {
     setAmountQuestionBDD(amount);
 
     //1st getquestion
-    const questionsResponse = await fetch(`${API}${amount}&token=${token}`);
+    const questionsResponse = await fetch(`${API}50&token=${token}`); //limit of 50 request
     const questionsData = await questionsResponse.json();
+
+    if (questionsData.response_code !== 0) {
+      console.log("Erreur API :", questionsData.response_code);
+      setLoadingMore(false);
+      return;
+    }
     let allQuestions = questionsData.results;
     setQuestions(allQuestions);
 
@@ -57,6 +66,14 @@ export default function Library() {
     console.log("fin de la recup des questions");
     console.log("nombre demande :", amount);
     console.log("nombre recu :", questionsData.results.length);
+
+    //save in useState
+    if (ALLQuestions == null) {
+      setALLQuestionS(allQuestions);
+    } else {
+      setALLQuestionS([...ALLQuestions, ...allQuestions]);
+    }
+    setLoadingMore(false);
   }
 
   //filter for the lib
@@ -66,9 +83,13 @@ export default function Library() {
     <View>
       <Text>Library</Text>
       <FlatList
-        data={questions}
-        keyExtractor={(item) => item.question}
+        data={ALLQuestions}
+        keyExtractor={(item, index) => index.toString()}
+        onEndReached={() => chargerQuestions()}
         renderItem={({ item }) => <Text>{item.question}</Text>}
+        ListFooterComponent={
+          loadingMore ? <ActivityIndicator size="large" /> : null
+        }
       />
     </View>
   );
