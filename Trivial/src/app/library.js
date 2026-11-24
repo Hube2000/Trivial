@@ -82,13 +82,20 @@ export default function Library() {
   return (
     <View>
       <Text>Library</Text>
+      <Text>nb de question :{ALLQuestions.length}</Text>
       <FlatList
         data={ALLQuestions}
         keyExtractor={(item, index) => index.toString()}
         onEndReached={() => chargerQuestions()}
         onEndReachedThreshold={0.5}
-        ListHeaderComponent={<Text>nb de question :{ALLQuestions.length}</Text>}
-        renderItem={({ item }) => <Text>{item.question}</Text>}
+        renderItem={({ item }) => (
+          <View style={styles.question}>
+            <Text>{item.question}</Text>
+            <Text>
+              {item.type} - {item.difficulty} - {item.category}
+            </Text>
+          </View>
+        )}
         ListFooterComponent={
           loadingMore ? <ActivityIndicator size="large" /> : null
         }
@@ -96,3 +103,11 @@ export default function Library() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  question: {
+    padding: 7,
+    borderColor: "darkgray",
+    borderWidth: 1,
+  },
+});
