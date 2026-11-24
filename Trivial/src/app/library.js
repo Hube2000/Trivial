@@ -86,6 +86,8 @@ export default function Library() {
         data={ALLQuestions}
         keyExtractor={(item, index) => index.toString()}
         onEndReached={() => chargerQuestions()}
+        onEndReachedThreshold={0.5}
+        ListHeaderComponent={<Text>nb de question :{ALLQuestions.length}</Text>}
         renderItem={({ item }) => <Text>{item.question}</Text>}
         ListFooterComponent={
           loadingMore ? <ActivityIndicator size="large" /> : null
