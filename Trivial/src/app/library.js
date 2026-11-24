@@ -40,6 +40,12 @@ export default function Library() {
     SetSession(data);
   }
 
+  async function chargerQuestions() {
+    const reponse = await fetch(API); //getToken
+    const data = await reponse.json();
+    setQuestions(data);
+  }
+
   return (
     <View>
       <Text>Library</Text>
