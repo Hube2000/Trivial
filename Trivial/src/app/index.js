@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -14,7 +14,7 @@ export default function Index() {
     <View>
       <Text>Hello c un trivia</Text>
       <Text>Creer un lobby</Text>
-      <Text>Librarie des question</Text>
+      <Link href="/library">Library</Link>
     </View>
   );
 }
