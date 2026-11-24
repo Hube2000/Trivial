@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
+  sleep,
 } from "react-native";
 
 //const
@@ -33,7 +34,6 @@ export default function Library() {
     return <ActivityIndicator size="large" style={{ flex: 1 }} />;
   }
 
-  //voire si une grosse fonction fais le taffe ou si il faut la decompo (cf si c le cas les com separe tout en sous fonctions casi presfaite)
   async function chargerQuestions() {
     //get token
     const tokenResponse = await fetch(API_GET_SESSION_TOKEN);
@@ -47,15 +47,29 @@ export default function Library() {
     const amount = amountData.overall.total_num_of_questions;
     setAmountQuestionBDD(amount);
 
-    //get questions
+    //1st getquestion
     const questionsResponse = await fetch(`${API}${amount}&token=${token}`);
     const questionsData = await questionsResponse.json();
-    setQuestions(questionsData.results);
+    let allQuestions = questionsData.results;
+    setQuestions(allQuestions);
+
+    //limit of 50 questions per request
+    console.log("fin de la recup des questions");
+    console.log("nombre demande :", amount);
+    console.log("nombre recu :", questionsData.results.length);
   }
 
+  //filter for the lib
+
+  //
   return (
     <View>
       <Text>Library</Text>
+      <FlatList
+        data={questions}
+        keyExtractor={(item) => item.question}
+        renderItem={({ item }) => <Text>{item.question}</Text>}
+      />
     </View>
   );
 }
