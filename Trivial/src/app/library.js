@@ -9,6 +9,7 @@ import {
   View,
   sleep,
 } from "react-native";
+import QuestionComponent from "../Library/QuestionComponent";
 
 //const
 const API_AMOUNT_OF_QUESTION_IN_BDD =
@@ -90,10 +91,7 @@ export default function Library() {
         onEndReachedThreshold={0.5}
         renderItem={({ item }) => (
           <View style={styles.question}>
-            <Text>{item.question}</Text>
-            <Text>
-              {item.type} - {item.difficulty} - {item.category}
-            </Text>
+            <QuestionComponent item={item}></QuestionComponent>
           </View>
         )}
         ListFooterComponent={
