@@ -26,7 +26,7 @@ export default function Library() {
   const [session, SetSession] = useState(null);
   const [amountQuestionBDD, setAmountQuestionBDD] = useState(null);
   const [questions, setQuestions] = useState(null);
-  const [ALLQuestions, setALLQuestionS] = useState(null);
+  const [ALLQuestions, setALLQuestions] = useState(null);
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
@@ -70,18 +70,20 @@ export default function Library() {
 
     //save in useState
     if (ALLQuestions == null) {
-      setALLQuestionS(allQuestions);
+      setALLQuestions(allQuestions);
     } else {
-      setALLQuestionS([...ALLQuestions, ...allQuestions]);
+      setALLQuestions([...ALLQuestions, ...allQuestions]);
     }
     setLoadingMore(false);
   }
 
   //filter for the lib
-
-  //
+  const [filterOnType, setFilterOnType] = useState(false);
   return (
     <View>
+      {/* filter */}
+
+      {/*question  */}
       <Text>Library</Text>
       <Text>nb de question :{ALLQuestions.length}</Text>
       <FlatList
