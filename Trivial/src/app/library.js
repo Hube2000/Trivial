@@ -40,7 +40,7 @@ export default function Library() {
 
   useEffect(() => {
     LoadQuestions();
-    GetTypeList();
+    GetTypeList(); //for the filter
   }, []);
 
   if (questions == null || session == null || amountQuestionBDD == null) {
@@ -70,7 +70,7 @@ export default function Library() {
     setAmountQuestionBDD(amount);
 
     //1st getquestion
-    const questionsResponse = await fetch(`${API}50&token=${token}`); //limit of 50 quest per request
+    const questionsResponse = await fetch(`${API}50&token=${token}`); //limit of 50 questions per request
     const questionsData = await questionsResponse.json();
 
     if (questionsData.response_code !== 0) {
@@ -122,9 +122,14 @@ export default function Library() {
     }
     return false;
   });
+
+  //
+  //MAIN PAGE
+  //
+
   return (
     <View>
-      {/* filter */}
+      {/* filter category */}
       <Text>Filtré sur une categorie :</Text>
       <View style={styles.contentViewAllign}>
         <ScrollView horizontal={true}>
@@ -142,8 +147,9 @@ export default function Library() {
           ))}
         </ScrollView>
       </View>
-      <Text>Filtré sur une difficulté:</Text>
 
+      {/* filter difficulty */}
+      <Text>Filtré sur une difficulté:</Text>
       <View>
         <ScrollView horizontal={true}>
           <Pressable
@@ -179,6 +185,8 @@ export default function Library() {
           </Pressable>
         </ScrollView>
       </View>
+
+      {/* show data ( mainly for debug  for now )*/}
 
       <Text>Library</Text>
       <Text>Type select : {selectedCategory}</Text>
