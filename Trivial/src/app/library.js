@@ -78,7 +78,6 @@ export default function Library() {
   }
 
   //filter for the lib
-  const [filterOnType, setFilterOnType] = useState(false);
   return (
     <View>
       {/* filter */}
