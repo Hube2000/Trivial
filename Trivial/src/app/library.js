@@ -203,13 +203,18 @@ export default function Library() {
         onEndReachedThreshold={0.5}
         renderItem={({ item }) => (
           <View style={styles.question}>
-            <QuestionComponent item={item}></QuestionComponent>
+            <QuestionComponent item={item} />
           </View>
         )}
         ListFooterComponent={
           loadingMore ? (
             <ActivityIndicator style={styles.loadingIndicator} size="large" />
           ) : null
+        }
+        ListEmptyComponent={
+          <Text style={{ textAlign: "center" }}>
+            Aucune question ne correspond à vos filtres
+          </Text>
         }
       />
     </View>
