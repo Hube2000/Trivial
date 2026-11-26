@@ -8,6 +8,8 @@ import {
   Text,
   View,
   sleep,
+  Span,
+  ScrollView,
 } from "react-native";
 import QuestionComponent from "../Library/QuestionComponent";
 
@@ -98,11 +100,19 @@ export default function Library() {
   return (
     <View>
       {/* filter */}
-      {typeListe.map((typeItem) => (
-        <Pressable key={typeItem} onPress={() => setselectedCategory(typeItem)}>
-          <Text>{typeItem}</Text>
-        </Pressable>
-      ))}
+      <Text>filtre</Text>
+      <View style={styles.contentViewAllign}>
+        <ScrollView horizontal={true}>
+          {typeListe.map((typeItem) => (
+            <Pressable
+              key={typeItem}
+              onPress={() => setselectedCategory(typeItem)}
+            >
+              <Text>| {typeItem} |</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
 
       {/*question  */}
       <Text>Library</Text>
@@ -136,5 +146,9 @@ const styles = StyleSheet.create({
   },
   loadingIndicator: {
     padding: 25,
+  },
+  contentViewAllign: {
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
 });
