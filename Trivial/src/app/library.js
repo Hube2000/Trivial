@@ -21,6 +21,7 @@ const API_GET_SESSION_TOKEN =
 const API_RESET_SESSION_TOKEN =
   "https://opentdb.com/api_token.php?command=reset&token="; // add the token after the "="
 
+const API_GET_TYPES = "https://opentdb.com/api_category.php"; //get the list of categories
 //main
 export default function Library() {
   const [session, SetSession] = useState(null);
@@ -28,13 +29,25 @@ export default function Library() {
   const [questions, setQuestions] = useState(null);
   const [ALLQuestions, setALLQuestions] = useState(null);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [typeListe, setTypeListe] = useState([]);
+  const [selectedCategory, setselectedCategory] = useState(null);
+  // const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+  // const [selectedCategories, setSelectedCategories] = useState([]);
 
   useEffect(() => {
     LoadQuestions();
+    GetTypeList();
   }, []);
 
   if (questions == null || session == null || amountQuestionBDD == null) {
     return <ActivityIndicator size="large" style={{ flex: 1 }} />;
+  }
+
+  async function GetTypeList() {
+    const typeListResponse = await fetch(API_GET_TYPES);
+    const typeListData = await typeListResponse.json();
+    const typeList = typeListData.trivia_categories.map((item) => item.name);
+    setTypeListe(typeList);
   }
 
   async function LoadQuestions() {
@@ -81,9 +94,15 @@ export default function Library() {
   return (
     <View>
       {/* filter */}
+      {typeListe.map((typeItem) => (
+        <Pressable key={typeItem} onPress={() => setselectedCategory(typeItem)}>
+          <Text>{typeItem}</Text>
+        </Pressable>
+      ))}
 
       {/*question  */}
       <Text>Library</Text>
+      <Text>Type select : {selectedCategory}</Text>
       <Text>nb de question :{ALLQuestions.length}</Text>
       <FlatList
         data={ALLQuestions}
