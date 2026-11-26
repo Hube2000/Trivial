@@ -24,11 +24,14 @@ const API_RESET_SESSION_TOKEN =
 const API_GET_TYPES = "https://opentdb.com/api_category.php"; //get the list of categories
 //main
 export default function Library() {
+  //questions fetching and gestion
   const [session, SetSession] = useState(null);
   const [amountQuestionBDD, setAmountQuestionBDD] = useState(null);
   const [questions, setQuestions] = useState(null);
   const [ALLQuestions, setALLQuestions] = useState(null);
   const [loadingMore, setLoadingMore] = useState(false);
+
+  //filter
   const [typeListe, setTypeListe] = useState([]);
   const [selectedCategory, setselectedCategory] = useState(null);
   // const [selectedDifficulty, setSelectedDifficulty] = useState(null);
@@ -43,6 +46,7 @@ export default function Library() {
     return <ActivityIndicator size="large" style={{ flex: 1 }} />;
   }
 
+  // for the filter
   async function GetTypeList() {
     const typeListResponse = await fetch(API_GET_TYPES);
     const typeListData = await typeListResponse.json();
