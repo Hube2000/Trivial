@@ -36,8 +36,7 @@ export default function Library() {
   //filter
   const [typeListe, setTypeListe] = useState([]);
   const [selectedCategory, setselectedCategory] = useState(null);
-  // const [selectedDifficulty, setSelectedDifficulty] = useState(null);
-  // const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedDifficulty, setSelectedDifficulty] = useState(null);
 
   useEffect(() => {
     LoadQuestions();
@@ -97,29 +96,108 @@ export default function Library() {
   }
 
   //filter for the lib
+
+  const visibleQuestions = ALLQuestions.filter((question) => {
+    if (
+      selectedCategory &&
+      question.category === selectedCategory &&
+      selectedDifficulty &&
+      question.difficulty === selectedDifficulty
+    ) {
+      return true;
+    }
+    if (
+      selectedCategory &&
+      question.category === selectedCategory &&
+      selectedDifficulty == null
+    ) {
+      return true;
+    }
+    if (
+      selectedDifficulty &&
+      question.difficulty === selectedDifficulty &&
+      selectedCategory == null
+    ) {
+      return true;
+    }
+    return false;
+  });
   return (
     <View>
       {/* filter */}
-      <Text>filtre</Text>
+      <Text>Filtré sur une categorie :</Text>
       <View style={styles.contentViewAllign}>
         <ScrollView horizontal={true}>
           {typeListe.map((typeItem) => (
             <Pressable
               key={typeItem}
-              onPress={() => setselectedCategory(typeItem)}
+              onPress={() => {
+                if (selectedCategory === typeItem) {
+                  setselectedCategory(null);
+                } else setselectedCategory(typeItem);
+              }}
             >
               <Text>| {typeItem} |</Text>
             </Pressable>
           ))}
         </ScrollView>
       </View>
+      <Text>Filtré sur une difficulté:</Text>
 
-      {/*question  */}
+      <View>
+        <ScrollView horizontal={true}>
+          <Pressable
+            key="easy"
+            onPress={() => {
+              if (selectedDifficulty === "easy") {
+                setSelectedDifficulty(null);
+              } else setSelectedDifficulty("easy");
+            }}
+            title="easy"
+          >
+            <Text>easy -</Text>
+          </Pressable>
+          <Pressable
+            key="medium"
+            onPress={() => {
+              if (selectedDifficulty === "medium") {
+                setSelectedDifficulty(null);
+              } else setSelectedDifficulty("medium");
+            }}
+          >
+            <Text> medium -</Text>
+          </Pressable>
+          <Pressable
+            key="hard"
+            onPress={() => {
+              if (selectedDifficulty === "hard") {
+                setSelectedDifficulty(null);
+              } else setSelectedDifficulty("hard");
+            }}
+          >
+            <Text> hard </Text>
+          </Pressable>
+        </ScrollView>
+      </View>
+
       <Text>Library</Text>
       <Text>Type select : {selectedCategory}</Text>
+      <Text>Difficulty select : {selectedDifficulty}</Text>
       <Text>nb de question :{ALLQuestions.length}</Text>
+      <Pressable
+        onPress={() => {
+          setSelectedDifficulty(null);
+          setselectedCategory(null);
+        }}
+      >
+        <Text>Reset filtre</Text>
+      </Pressable>
       <FlatList
-        data={ALLQuestions}
+        data={
+          selectedDifficulty == null && selectedCategory == null
+            ? ALLQuestions
+            : visibleQuestions
+        }
         keyExtractor={(item, index) => index.toString()}
         onEndReached={() => LoadQuestions()}
         onEndReachedThreshold={0.5}
