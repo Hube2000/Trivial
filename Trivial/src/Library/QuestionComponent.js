@@ -12,11 +12,22 @@ import {
 
 export default function QuestionComponent({ item }) {
   return (
-    <View>
-      <Text>{item.question}</Text>
-      <Text>
+    <View style={styles.questionBox}>
+      <Text style={styles.question}>{item.question}</Text>
+      <Text style={styles.spec}>
         {item.type} - {item.difficulty} - {item.category}
       </Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  questionBox: {},
+  question: {
+    fontWeight: "bold",
+  },
+  Spec: {
+    fontSize: 16,
+    color: "#666",
+  },
+});
